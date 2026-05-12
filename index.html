@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FY27 Staff Weeks & Work Program Preference Survey</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F6F2;
+    --surface: #FFFFFF;
+    --border: #E2E0D8;
+    --border-strong: #C8C6BC;
+    --text: #1A1916;
+    --text-muted: #6B6960;
+    --text-hint: #9C9A92;
+    --accent: #2D5BE3;
+    --accent-light: #EEF2FD;
+    --accent-text: #1A3FA8;
+    --asa: #0F6E56;
+    --asa-bg: #E1F5EE;
+    --len: #185FA5;
+    --len-bg: #E6F1FB;
+    --spn: #7F77DD;
+    --spn-bg: #EEEDFE;
+    --danger: #A32D2D;
+    --danger-bg: #FCEBEB;
+    --success: #1A7A4A;
+    --success-bg: #EAFAF2;
+    --font: 'IBM Plex Sans', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+    --radius: 6px;
+    --radius-lg: 10px;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .page-wrap { max-width: 780px; margin: 0 auto; }
+
+  .page-header {
+    border-bottom: 2px solid var(--text);
+    padding-bottom: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .page-header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin-bottom: 0.25rem;
+  }
+  .page-header p { color: var(--text-muted); font-size: 13px; }
+  .respondent-name {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .respondent-name label { font-size: 13px; font-weight: 500; white-space: nowrap; }
+  .respondent-name input {
+    flex: 1;
+    max-width: 320px;
+    padding: 7px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    font-family: var(--font);
+    font-size: 13px;
+    background: var(--surface);
+    color: var(--text);
+  }
+  .respondent-name input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .part-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.25rem;
+  }
+  .part-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    background: var(--text);
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+  }
+  .part-title { font-size: 17px; font-weight: 600; }
+
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+  }
+  .section-head {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .section-head h2 { font-size: 14px; font-weight: 600; }
+  .section-head p { font-size: 12px; color: var(--text-muted); }
+  .section-body { padding: 0; }
+
+  /* Operations table */
+  .ops-table { width: 100%; border-collapse: collapse; }
+  .ops-table thead tr { background: #F7F6F2; }
+  .ops-table th {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  .ops-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    font-size: 13px;
+  }
+  .ops-table tbody tr:last-child td { border-bottom: none; }
+  .ops-table tbody tr:hover td { background: #FAFAF8; }
+
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+  .badge-asa { background: var(--asa-bg); color: var(--asa); }
+  .badge-len { background: var(--len-bg); color: var(--len); }
+  .badge-spn { background: var(--spn-bg); color: var(--spn); }
+
+  .op-id {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-hint);
+    margin-right: 4px;
+  }
+
+  select.role-sel {
+    font-family: var(--font);
+    font-size: 12px;
+    padding: 5px 8px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: #FAFAF8;
+    color: var(--text);
+    cursor: pointer;
+    width: 130px;
+  }
+  select.role-sel:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  input.weeks-inp {
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 5px 8px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: #FAFAF8;
+    color: var(--text);
+    width: 70px;
+    text-align: center;
+  }
+  input.weeks-inp:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  input.weeks-inp:invalid { border-color: var(--danger); }
+
+  /* Dynamic rows */
+  .dynamic-section { padding: 1rem 1.25rem; }
+  .col-headers {
+    display: grid;
+    grid-template-columns: 1fr 130px 70px 32px;
+    gap: 8px;
+    padding: 0 0 6px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+  .col-hdr { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .activity-row {
+    display: grid;
+    grid-template-columns: 1fr 130px 70px 32px;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .activity-row:last-of-type { border-bottom: none; }
+  .activity-row input[type=text] {
+    font-family: var(--font);
+    font-size: 13px;
+    padding: 5px 8px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: #FAFAF8;
+    color: var(--text);
+    width: 100%;
+  }
+  .activity-row input[type=text]:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 12px;
+    margin-top: 0.75rem;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .add-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+
+  .remove-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--text-hint);
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.15s;
+  }
+  .remove-btn:hover { border-color: var(--danger); color: var(--danger); background: var(--danger-bg); }
+
+  /* Part 2 */
+  .rank-controls {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .rank-controls label { font-size: 13px; color: var(--text-muted); }
+  .rank-controls select {
+    font-family: var(--font);
+    font-size: 13px;
+    padding: 5px 10px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text);
+  }
+  .rank-limit-info {
+    font-size: 11px;
+    font-family: var(--mono);
+    color: var(--accent-text);
+    background: var(--accent-light);
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  .rank-list { list-style: none; }
+  .rank-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 1.25rem;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .rank-item:last-child { border-bottom: none; }
+  .rank-item:hover { background: #FAFAF8; }
+  .rank-item.selected { background: var(--accent-light); }
+
+  .rank-cb { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+  .rank-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid var(--border-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: var(--mono);
+    color: var(--text-hint);
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .rank-num.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .rank-item label { font-size: 13px; cursor: pointer; flex: 1; }
+
+  /* Divider */
+  .part-divider { height: 1px; background: var(--border); margin: 2rem 0 1.5rem; }
+
+  /* Submit area */
+  .submit-area {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+  .submit-btn {
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 28px;
+    background: var(--text);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: opacity 0.15s;
+    letter-spacing: 0.2px;
+  }
+  .submit-btn:hover { opacity: 0.85; }
+  .export-btn {
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 20px;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .export-btn:hover { background: var(--bg); border-color: var(--text); }
+
+  /* Success banner */
+  .success-banner {
+    display: none;
+    background: var(--success-bg);
+    border: 1px solid #A8DFC0;
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    margin-top: 1.5rem;
+    color: var(--success);
+  }
+  .success-banner h3 { font-size: 15px; font-weight: 600; margin-bottom: 0.5rem; }
+  .success-banner p { font-size: 13px; }
+
+  /* Summary table */
+  .summary-wrap {
+    display: none;
+    margin-top: 2rem;
+  }
+  .summary-wrap h2 { font-size: 16px; font-weight: 600; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--text); }
+  .summary-section { margin-bottom: 1.5rem; }
+  .summary-section h3 { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; }
+  .summary-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .summary-table th { text-align: left; padding: 6px 10px; background: #F7F6F2; border: 1px solid var(--border); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-muted); }
+  .summary-table td { padding: 6px 10px; border: 1px solid var(--border); }
+  .rank-badge { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; font-family: var(--mono); }
+
+  @media (max-width: 600px) {
+    .ops-table th:nth-child(2), .ops-table td:nth-child(2) { display: none; }
+    .col-headers, .activity-row { grid-template-columns: 1fr 100px 60px 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="page-header">
+    <h1>FY27 Staff Weeks &amp; Work Program Preference Survey</h1>
+    <p>ISAU 1 — Please complete all sections and click Submit when done.</p>
+    <div class="respondent-name">
+      <label for="resp-name">Your name</label>
+      <input type="text" id="resp-name" placeholder="Full name" autocomplete="name">
+    </div>
+  </div>
+
+  <!-- PART 1 -->
+  <div class="part-header">
+    <span class="part-num">PART 01</span>
+    <span class="part-title">Projected staff weeks for FY27</span>
+  </div>
+
+  <!-- ISAU Operations -->
+  <div class="section">
+    <div class="section-head">
+      <h2>ISAU 1 operations</h2>
+      <p>Select your role and enter estimated staff weeks (0–50). Leave blank if not applicable.</p>
+    </div>
+    <div class="section-body">
+      <table class="ops-table" id="ops-table">
+        <thead>
+          <tr>
+            <th style="width:55%">Operation</th>
+            <th style="width:22%">Role</th>
+            <th style="width:13%">Staff weeks</th>
+          </tr>
+        </thead>
+        <tbody id="ops-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Cross-support -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Cross-support to other GPs / Regions</h2>
+      <p>Add each cross-support activity, your role, and estimated staff weeks.</p>
+    </div>
+    <div class="section-body dynamic-section">
+      <div class="col-headers">
+        <span class="col-hdr">Activity name</span>
+        <span class="col-hdr">Role</span>
+        <span class="col-hdr">Weeks</span>
+        <span></span>
+      </div>
+      <div id="cross-rows"></div>
+      <button class="add-btn" onclick="addRow('cross-rows','cross')">+ Add activity</button>
+    </div>
+  </div>
+
+  <!-- Other -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Other activities</h2>
+      <p>Add any other activities not listed above.</p>
+    </div>
+    <div class="section-body dynamic-section">
+      <div class="col-headers">
+        <span class="col-hdr">Activity name</span>
+        <span class="col-hdr">Role</span>
+        <span class="col-hdr">Weeks</span>
+        <span></span>
+      </div>
+      <div id="other-rows"></div>
+      <button class="add-btn" onclick="addRow('other-rows','other')">+ Add activity</button>
+    </div>
+  </div>
+
+  <div class="part-divider"></div>
+
+  <!-- PART 2 -->
+  <div class="part-header">
+    <span class="part-num">PART 02</span>
+    <span class="part-title">Work program preference for FY27</span>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Preferred operations</h2>
+      <p>Select how many operations to rank, then check your preferred operations. Order of selection = your ranking.</p>
+    </div>
+    <div class="rank-controls">
+      <label for="how-many">How many operations to rank?</label>
+      <select id="how-many" onchange="updateLimit()">
+        <option value="3">3</option><option value="4">4</option>
+        <option value="5" selected>5</option><option value="6">6</option>
+        <option value="7">7</option><option value="8">8</option>
+        <option value="9">9</option><option value="10">10</option>
+      </select>
+      <span class="rank-limit-info" id="rank-info">0 / 5 selected</span>
+    </div>
+    <ul class="rank-list" id="rank-list"></ul>
+  </div>
+
+  <!-- Submit -->
+  <div class="submit-area">
+    <button class="submit-btn" onclick="submitForm()">Submit survey</button>
+    <button class="export-btn" onclick="exportCSV()">&#8595; Export responses (CSV)</button>
+  </div>
+
+  <div class="success-banner" id="success-banner">
+    <h3>&#10003; Response submitted</h3>
+    <p id="success-msg">Thank you. Your response has been recorded.</p>
+  </div>
+
+  <div class="summary-wrap" id="summary-wrap">
+    <h2>Your response summary</h2>
+    <div id="summary-content"></div>
+  </div>
+
+</div>
+
+<script>
+const ops = [
+  {code:"ASA",id:"P180562",name:"Bangladesh PASA"},
+  {code:"ASA",id:"P500527",name:"STARCE Hydromet & EWS"},
+  {code:"ASA",id:"P500582",name:"Reg. Devt. Himalayas"},
+  {code:"ASA",id:"P512625",name:"India PASA"},
+  {code:"LEN",id:"P506340",name:"Maharashtra"},
+  {code:"LEN",id:"P517116",name:"Bangladesh CERP"},
+  {code:"SPN",id:"P154990",name:"Jhelum and Tawi"},
+  {code:"SPN",id:"P158502",name:"Jakhand Municp."},
+  {code:"SPN",id:"P160005",name:"CRes MPA"},
+  {code:"SPN",id:"P163418",name:"NUGIP"},
+  {code:"SPN",id:"P163957",name:"Maldives"},
+  {code:"SPN",id:"P165477",name:"Dhaka City Neighb."},
+  {code:"SPN",id:"P168633",name:"Kerala Solid Waste"},
+  {code:"SPN",id:"P170811",name:"Punjab Municipal"},
+  {code:"SPN",id:"P173312",name:"Bangladesh RIVER"},
+  {code:"SPN",id:"P174778",name:"Kerala PforR"},
+  {code:"SPN",id:"P174937",name:"LG COVID-19"},
+  {code:"SPN",id:"P175081",name:"BT:RIR"},
+  {code:"SPN",id:"P175221",name:"Chennai City Partner."},
+  {code:"SPN",id:"P175728",name:"Gujarat Resil. Cities"},
+  {code:"SPN",id:"P178985",name:"Bangladesh Resilient Urban"},
+  {code:"SPN",id:"P179189",name:"Tamil Nadu Climate Resil."},
+  {code:"SPN",id:"P181344",name:"Nepal Cat DDO"},
+  {code:"SPN",id:"P500536",name:"Bhutan Cat DDO"},
+  {code:"SPN",id:"P501274",name:"B-HELP"},
+  {code:"SPN",id:"P507508",name:"Amaravati"},
+  {code:"SPN",id:"P508058",name:"BSTRONG"},
+  {code:"SPN",id:"P511605",name:"Sri Lanka REVIVE"},
+  {code:"SPN",id:"P512377",name:"Lumbini"},
+  {code:"SPN",id:"P513815",name:"READY-HP"}
+];
+
+// Build ops table
+const tbody = document.getElementById('ops-body');
+ops.forEach((op, i) => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td><span class="badge badge-${op.code.toLowerCase()}">${op.code}</span><span class="op-id">${op.id}</span>${op.name}</td>
+    <td><select class="role-sel" id="role_${i}"><option value="">— select —</option><option>TTL</option><option>Co-TTL</option><option>Team member</option></select></td>
+    <td><input class="weeks-inp" type="number" id="weeks_${i}" min="0" max="50" placeholder="—"></td>`;
+  tbody.appendChild(tr);
+});
+
+// Dynamic rows
+let counters = {cross: 0, other: 0};
+function roleOpts(name) {
+  return `<select class="role-sel" name="${name}"><option value="">— select —</option><option>TTL</option><option>Co-TTL</option><option>Team member</option></select>`;
+}
+function addRow(containerId, prefix) {
+  const idx = ++counters[prefix];
+  const div = document.createElement('div');
+  div.className = 'activity-row';
+  div.id = `${prefix}_row_${idx}`;
+  div.innerHTML = `<input type="text" placeholder="Activity name" id="${prefix}_name_${idx}">
+    ${roleOpts(`${prefix}_role_${idx}`)}
+    <input class="weeks-inp" type="number" id="${prefix}_weeks_${idx}" min="0" max="50" placeholder="—">
+    <button class="remove-btn" onclick="document.getElementById('${prefix}_row_${idx}').remove()" title="Remove">&#10005;</button>`;
+  document.getElementById(containerId).appendChild(div);
+}
+addRow('cross-rows','cross');
+addRow('other-rows','other');
+
+// Ranking
+const rankList = document.getElementById('rank-list');
+const checkedOrder = [];
+ops.forEach((op, i) => {
+  const li = document.createElement('li');
+  li.className = 'rank-item';
+  li.id = `rank_item_${i}`;
+  li.innerHTML = `<input type="checkbox" class="rank-cb" id="rank_cb_${i}" onchange="handleCheck(${i}, this)">
+    <div class="rank-num" id="rank_num_${i}"></div>
+    <label for="rank_cb_${i}"><span class="badge badge-${op.code.toLowerCase()}">${op.code}</span><span class="op-id">${op.id}</span>${op.name}</label>`;
+  rankList.appendChild(li);
+});
+
+function getLimit() { return parseInt(document.getElementById('how-many').value); }
+function handleCheck(i, cb) {
+  const limit = getLimit();
+  if (cb.checked) {
+    if (checkedOrder.filter(x => x !== null).length >= limit) { cb.checked = false; return; }
+    checkedOrder.push(i);
+  } else {
+    const pos = checkedOrder.indexOf(i);
+    if (pos > -1) checkedOrder.splice(pos, 1);
+  }
+  refreshRankNums();
+}
+function refreshRankNums() {
+  ops.forEach((_, i) => {
+    const num = document.getElementById(`rank_num_${i}`);
+    num.textContent = '';
+    num.classList.remove('active');
+    document.getElementById(`rank_item_${i}`).classList.remove('selected');
+  });
+  checkedOrder.forEach((idx, rank) => {
+    const num = document.getElementById(`rank_num_${idx}`);
+    num.textContent = rank + 1;
+    num.classList.add('active');
+    document.getElementById(`rank_item_${idx}`).classList.add('selected');
+  });
+  document.getElementById('rank-info').textContent = `${checkedOrder.length} / ${getLimit()} selected`;
+}
+function updateLimit() {
+  const limit = getLimit();
+  while (checkedOrder.length > limit) {
+    const removed = checkedOrder.pop();
+    document.getElementById(`rank_cb_${removed}`).checked = false;
+  }
+  refreshRankNums();
+}
+
+// ── Google Sheets endpoint (hardcoded) ──────────────────────────
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx4JLXo0dkF3CYMxhS53N0G5E5W4R6kVXDIB-RJQ_LWX3ygf1-_VJLZRA0MgLx8aBQWxA/exec';
+
+function collectData() {
+  const name = document.getElementById('resp-name').value.trim() || 'Anonymous';
+  const timestamp = new Date().toISOString();
+  const isauOps = ops.map((op, i) => ({
+    projectId: op.id, name: op.name, code: op.code,
+    role: document.getElementById(`role_${i}`).value,
+    weeks: document.getElementById(`weeks_${i}`).value
+  })).filter(r => r.role || r.weeks);
+  const crossOps = [];
+  for (let i = 1; i <= counters.cross; i++) {
+    const rowEl = document.getElementById(`cross_row_${i}`);
+    if (!rowEl) continue;
+    const actName = document.getElementById(`cross_name_${i}`)?.value?.trim();
+    const role = rowEl.querySelector('select')?.value;
+    const weeks = document.getElementById(`cross_weeks_${i}`)?.value;
+    if (actName || role || weeks) crossOps.push({ name: actName||'', role: role||'', weeks: weeks||'' });
+  }
+  const otherOps = [];
+  for (let i = 1; i <= counters.other; i++) {
+    const rowEl = document.getElementById(`other_row_${i}`);
+    if (!rowEl) continue;
+    const actName = document.getElementById(`other_name_${i}`)?.value?.trim();
+    const role = rowEl.querySelector('select')?.value;
+    const weeks = document.getElementById(`other_weeks_${i}`)?.value;
+    if (actName || role || weeks) otherOps.push({ name: actName||'', role: role||'', weeks: weeks||'' });
+  }
+  const rankings = checkedOrder.map((idx, rank) => ({
+    rank: rank+1, projectId: ops[idx].id, name: ops[idx].name, code: ops[idx].code
+  }));
+  return { timestamp, respondent: name, isauOps, crossOps, otherOps, rankings };
+}
+
+// Submit
+async function submitForm() {
+  const name = document.getElementById('resp-name').value.trim();
+  if (!name) { alert('Please enter your name before submitting.'); document.getElementById('resp-name').focus(); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  const data = collectData();
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    document.getElementById('success-msg').innerHTML = `Thank you, <strong>${name}</strong>. Your response has been saved successfully.`;
+    document.getElementById('success-banner').style.display = 'block';
+    document.getElementById('success-banner').scrollIntoView({behavior:'smooth', block:'center'});
+    btn.textContent = '✓ Submitted';
+    renderSummary(name);
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Submit survey';
+    alert('Submission failed. Please try again or use "Export as CSV" as a backup.');
+  }
+}
+
+function renderSummary(name) { // name passed from submitForm
+  const wrap = document.getElementById('summary-wrap');
+  const content = document.getElementById('summary-content');
+  let html = '';
+
+  // ISAU ops
+  const opsRows = ops.map((op, i) => {
+    const role = document.getElementById(`role_${i}`).value;
+    const weeks = document.getElementById(`weeks_${i}`).value;
+    if (!role && !weeks) return null;
+    return `<tr><td><span class="badge badge-${op.code.toLowerCase()}">${op.code}</span><span class="op-id">${op.id}</span>${op.name}</td><td>${role || '—'}</td><td>${weeks || '—'}</td></tr>`;
+  }).filter(Boolean);
+
+  html += `<div class="summary-section"><h3>ISAU 1 operations</h3>`;
+  if (opsRows.length) {
+    html += `<table class="summary-table"><thead><tr><th>Operation</th><th>Role</th><th>Staff weeks</th></tr></thead><tbody>${opsRows.join('')}</tbody></table>`;
+  } else { html += `<p style="font-size:13px;color:var(--text-muted)">No entries.</p>`; }
+  html += `</div>`;
+
+  // Cross-support
+  const crossRows = [];
+  for (let i = 1; i <= counters.cross; i++) {
+    const rowEl = document.getElementById(`cross_row_${i}`);
+    if (!rowEl) continue;
+    const actName = document.getElementById(`cross_name_${i}`)?.value;
+    const role = rowEl.querySelector('select')?.value;
+    const weeks = document.getElementById(`cross_weeks_${i}`)?.value;
+    if (actName || role || weeks) crossRows.push(`<tr><td>${actName || '—'}</td><td>${role || '—'}</td><td>${weeks || '—'}</td></tr>`);
+  }
+  html += `<div class="summary-section"><h3>Cross-support activities</h3>`;
+  if (crossRows.length) {
+    html += `<table class="summary-table"><thead><tr><th>Activity</th><th>Role</th><th>Staff weeks</th></tr></thead><tbody>${crossRows.join('')}</tbody></table>`;
+  } else { html += `<p style="font-size:13px;color:var(--text-muted)">No entries.</p>`; }
+  html += `</div>`;
+
+  // Other
+  const otherRows = [];
+  for (let i = 1; i <= counters.other; i++) {
+    const rowEl = document.getElementById(`other_row_${i}`);
+    if (!rowEl) continue;
+    const actName = document.getElementById(`other_name_${i}`)?.value;
+    const role = rowEl.querySelector('select')?.value;
+    const weeks = document.getElementById(`other_weeks_${i}`)?.value;
+    if (actName || role || weeks) otherRows.push(`<tr><td>${actName || '—'}</td><td>${role || '—'}</td><td>${weeks || '—'}</td></tr>`);
+  }
+  html += `<div class="summary-section"><h3>Other activities</h3>`;
+  if (otherRows.length) {
+    html += `<table class="summary-table"><thead><tr><th>Activity</th><th>Role</th><th>Staff weeks</th></tr></thead><tbody>${otherRows.join('')}</tbody></table>`;
+  } else { html += `<p style="font-size:13px;color:var(--text-muted)">No entries.</p>`; }
+  html += `</div>`;
+
+  // Rankings
+  html += `<div class="summary-section"><h3>Work program preference</h3>`;
+  if (checkedOrder.length) {
+    html += `<table class="summary-table"><thead><tr><th>Rank</th><th>Operation</th></tr></thead><tbody>`;
+    checkedOrder.forEach((idx, rank) => {
+      const op = ops[idx];
+      html += `<tr><td><span class="rank-badge">${rank+1}</span></td><td><span class="badge badge-${op.code.toLowerCase()}">${op.code}</span><span class="op-id">${op.id}</span>${op.name}</td></tr>`;
+    });
+    html += `</tbody></table>`;
+  } else { html += `<p style="font-size:13px;color:var(--text-muted)">No preferences selected.</p>`; }
+  html += `</div>`;
+
+  content.innerHTML = html;
+  wrap.style.display = 'block';
+  setTimeout(() => wrap.scrollIntoView({behavior:'smooth', block:'start'}), 300);
+}
+
+// CSV Export
+function exportCSV() {
+  const name = document.getElementById('resp-name').value.trim() || 'Anonymous';
+  let rows = [['Respondent','Section','Operation/Activity','Project ID','Role','Staff Weeks']];
+
+  ops.forEach((op, i) => {
+    const role = document.getElementById(`role_${i}`).value;
+    const weeks = document.getElementById(`weeks_${i}`).value;
+    if (role || weeks) rows.push([name,'ISAU Operations',op.name,op.id,role,weeks]);
+  });
+
+  for (let i = 1; i <= counters.cross; i++) {
+    const rowEl = document.getElementById(`cross_row_${i}`);
+    if (!rowEl) continue;
+    const actName = document.getElementById(`cross_name_${i}`)?.value;
+    const role = rowEl.querySelector('select')?.value;
+    const weeks = document.getElementById(`cross_weeks_${i}`)?.value;
+    if (actName || role || weeks) rows.push([name,'Cross-support',actName,'',role,weeks]);
+  }
+
+  for (let i = 1; i <= counters.other; i++) {
+    const rowEl = document.getElementById(`other_row_${i}`);
+    if (!rowEl) continue;
+    const actName = document.getElementById(`other_name_${i}`)?.value;
+    const role = rowEl.querySelector('select')?.value;
+    const weeks = document.getElementById(`other_weeks_${i}`)?.value;
+    if (actName || role || weeks) rows.push([name,'Other',actName,'',role,weeks]);
+  }
+
+  rows.push([]);
+  rows.push(['Respondent','Section','Rank','Operation','Project ID']);
+  checkedOrder.forEach((idx, rank) => {
+    const op = ops[idx];
+    rows.push([name,'Preference',rank+1,op.name,op.id]);
+  });
+
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `FY27_Survey_${name.replace(/\s+/g,'_')}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
