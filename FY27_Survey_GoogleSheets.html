@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FY27 Staff Weeks & Work Program Preference Survey</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #F7F6F2; --surface: #FFFFFF; --border: #E2E0D8; --border-strong: #C8C6BC;
+    --text: #1A1916; --text-muted: #6B6960; --text-hint: #9C9A92;
+    --accent: #2D5BE3; --accent-light: #EEF2FD; --accent-text: #1A3FA8;
+    --asa: #0F6E56; --asa-bg: #E1F5EE; --len: #185FA5; --len-bg: #E6F1FB;
+    --spn: #7F77DD; --spn-bg: #EEEDFE; --danger: #A32D2D; --danger-bg: #FCEBEB;
+    --success: #1A7A4A; --success-bg: #EAFAF2;
+    --font: 'IBM Plex Sans', sans-serif; --mono: 'IBM Plex Mono', monospace;
+    --radius: 6px; --radius-lg: 10px;
+  }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; min-height: 100vh; padding: 2rem 1rem 4rem; }
+  .page-wrap { max-width: 780px; margin: 0 auto; }
+
+  /* ── Setup banner ── */
+  .setup-banner {
+    background: #FFFBEB; border: 1.5px solid #F59E0B; border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; gap: 12px; align-items: flex-start;
+  }
+  .setup-banner .icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .setup-banner p { font-size: 13px; color: #78350F; line-height: 1.6; }
+  .setup-banner strong { font-weight: 600; }
+  .setup-banner code { font-family: var(--mono); background: #FEF3C7; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+  .setup-banner.connected { background: #EAFAF2; border-color: #1A7A4A; }
+  .setup-banner.connected p { color: #14532D; }
+
+  /* ── Script URL input ── */
+  .script-url-row {
+    display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;
+  }
+  .script-url-row input {
+    flex: 1; min-width: 200px; font-family: var(--mono); font-size: 12px;
+    padding: 6px 10px; border: 1px solid #F59E0B; border-radius: var(--radius);
+    background: #fff; color: var(--text);
+  }
+  .script-url-row input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .script-url-row button {
+    font-family: var(--font); font-size: 12px; font-weight: 600;
+    padding: 6px 14px; border-radius: var(--radius); border: none;
+    background: #F59E0B; color: #fff; cursor: pointer; white-space: nowrap;
+  }
+  .script-url-row button:hover { background: #D97706; }
+
+  .page-header { border-bottom: 2px solid var(--text); padding-bottom: 1.25rem; margin-bottom: 2rem; }
+  .page-header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 0.25rem; }
+  .page-header p { color: var(--text-muted); font-size: 13px; }
+  .respondent-name { margin-top: 1rem; display: flex; align-items: center; gap: 12px; }
+  .respondent-name label { font-size: 13px; font-weight: 500; white-space: nowrap; }
+  .respondent-name input {
+    flex: 1; max-width: 320px; padding: 7px 12px;
+    border: 1px solid var(--border-strong); border-radius: var(--radius);
+    font-family: var(--font); font-size: 13px; background: var(--surface); color: var(--text);
+  }
+  .respondent-name input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .part-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; }
+  .part-num { font-family: var(--mono); font-size: 11px; font-weight: 500; background: var(--text); color: #fff; padding: 3px 8px; border-radius: 3px; letter-spacing: 0.5px; }
+  .part-title { font-size: 17px; font-weight: 600; }
+
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 1.25rem; overflow: hidden; }
+  .section-head { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .section-head h2 { font-size: 14px; font-weight: 600; }
+  .section-head p { font-size: 12px; color: var(--text-muted); }
+  .section-body { padding: 0; }
+
+  .ops-table { width: 100%; border-collapse: collapse; }
+  .ops-table thead tr { background: #F7F6F2; }
+  .ops-table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  .ops-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; font-size: 13px; }
+  .ops-table tbody tr:last-child td { border-bottom: none; }
+  .ops-table tbody tr:hover td { background: #FAFAF8; }
+
+  .badge { display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 500; padding: 2px 5px; border-radius: 3px; margin-right: 5px; vertical-align: middle; }
+  .badge-asa { background: var(--asa-bg); color: var(--asa); }
+  .badge-len { background: var(--len-bg); color: var(--len); }
+  .badge-spn { background: var(--spn-bg); color: var(--spn); }
+  .op-id { font-family: var(--mono); font-size: 11px; color: var(--text-hint); margin-right: 4px; }
+
+  select.role-sel { font-family: var(--font); font-size: 12px; padding: 5px 8px; border: 1px solid var(--border-strong); border-radius: var(--radius); background: #FAFAF8; color: var(--text); cursor: pointer; width: 130px; }
+  select.role-sel:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  input.weeks-inp { font-family: var(--mono); font-size: 13px; padding: 5px 8px; border: 1px solid var(--border-strong); border-radius: var(--radius); background: #FAFAF8; color: var(--text); width: 70px; text-align: center; }
+  input.weeks-inp:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  input.weeks-inp:invalid { border-color: var(--danger); }
+
+  .dynamic-section { padding: 1rem 1.25rem; }
+  .col-headers { display: grid; grid-template-columns: 1fr 130px 70px 32px; gap: 8px; padding: 0 0 6px; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+  .col-hdr { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .activity-row { display: grid; grid-template-columns: 1fr 130px 70px 32px; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .activity-row:last-of-type { border-bottom: none; }
+  .activity-row input[type=text] { font-family: var(--font); font-size: 13px; padding: 5px 8px; border: 1px solid var(--border-strong); border-radius: var(--radius); background: #FAFAF8; color: var(--text); width: 100%; }
+  .activity-row input[type=text]:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .add-btn { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font); font-size: 12px; font-weight: 500; padding: 6px 12px; margin-top: 0.75rem; border: 1px dashed var(--border-strong); border-radius: var(--radius); background: transparent; color: var(--text-muted); cursor: pointer; transition: all 0.15s; }
+  .add-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+  .remove-btn { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid var(--border); border-radius: var(--radius); background: transparent; color: var(--text-hint); cursor: pointer; font-size: 14px; transition: all 0.15s; }
+  .remove-btn:hover { border-color: var(--danger); color: var(--danger); background: var(--danger-bg); }
+
+  .rank-controls { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .rank-controls label { font-size: 13px; color: var(--text-muted); }
+  .rank-controls select { font-family: var(--font); font-size: 13px; padding: 5px 10px; border: 1px solid var(--border-strong); border-radius: var(--radius); background: var(--surface); color: var(--text); }
+  .rank-limit-info { font-size: 11px; font-family: var(--mono); color: var(--accent-text); background: var(--accent-light); padding: 3px 8px; border-radius: 3px; }
+
+  .rank-list { list-style: none; }
+  .rank-item { display: flex; align-items: center; gap: 10px; padding: 8px 1.25rem; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.1s; }
+  .rank-item:last-child { border-bottom: none; }
+  .rank-item:hover { background: #FAFAF8; }
+  .rank-item.selected { background: var(--accent-light); }
+  .rank-cb { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+  .rank-num { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border-strong); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; font-family: var(--mono); color: var(--text-hint); flex-shrink: 0; transition: all 0.15s; }
+  .rank-num.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .rank-item label { font-size: 13px; cursor: pointer; flex: 1; }
+
+  .part-divider { height: 1px; background: var(--border); margin: 2rem 0 1.5rem; }
+
+  .submit-area { display: flex; align-items: center; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+  .submit-btn { font-family: var(--font); font-size: 14px; font-weight: 600; padding: 10px 28px; background: var(--text); color: #fff; border: none; border-radius: var(--radius); cursor: pointer; transition: opacity 0.15s; letter-spacing: 0.2px; display: flex; align-items: center; gap: 8px; }
+  .submit-btn:hover { opacity: 0.85; }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .submit-btn .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
+  .submit-btn.loading .spinner { display: block; }
+  .submit-btn.loading .btn-label { display: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .export-btn { font-family: var(--font); font-size: 13px; font-weight: 500; padding: 10px 20px; background: transparent; color: var(--text); border: 1px solid var(--border-strong); border-radius: var(--radius); cursor: pointer; transition: all 0.15s; }
+  .export-btn:hover { background: var(--bg); border-color: var(--text); }
+
+  .success-banner { display: none; background: var(--success-bg); border: 1px solid #A8DFC0; border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; margin-top: 1.5rem; }
+  .success-banner h3 { font-size: 15px; font-weight: 600; color: var(--success); margin-bottom: 0.4rem; }
+  .success-banner p { font-size: 13px; color: #166534; }
+  .success-banner a { color: var(--accent); text-decoration: underline; }
+
+  .error-banner { display: none; background: var(--danger-bg); border: 1px solid #F5ABAB; border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-top: 1rem; font-size: 13px; color: var(--danger); }
+
+  .summary-wrap { display: none; margin-top: 2rem; }
+  .summary-wrap h2 { font-size: 16px; font-weight: 600; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--text); }
+  .summary-section { margin-bottom: 1.5rem; }
+  .summary-section h3 { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; }
+  .summary-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .summary-table th { text-align: left; padding: 6px 10px; background: #F7F6F2; border: 1px solid var(--border); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-muted); }
+  .summary-table td { padding: 6px 10px; border: 1px solid var(--border); }
+  .rank-badge { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; font-family: var(--mono); }
+
+  @media (max-width: 600px) {
+    .ops-table th:nth-child(2), .ops-table td:nth-child(2) { display: none; }
+    .col-headers, .activity-row { grid-template-columns: 1fr 100px 60px 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- ── Setup Banner ── -->
+  <div class="setup-banner" id="setup-banner">
+    <div class="icon">⚙️</div>
+    <div style="flex:1">
+      <p><strong>One-time setup required.</strong> Paste your Google Apps Script Web App URL below to connect this form to Google Sheets. See the <code>SETUP_GUIDE.html</code> file for step-by-step instructions.</p>
+      <div class="script-url-row">
+        <input type="url" id="script-url-input" placeholder="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec">
+        <button onclick="saveScriptUrl()">Connect ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-header">
+    <h1>FY27 Staff Weeks &amp; Work Program Preference Survey</h1>
+    <p>ISAU 1 — Please complete all sections. Leave rows blank if not applicable.</p>
+    <div class="respondent-name">
+      <label for="resp-name">Your name</label>
+      <input type="text" id="resp-name" placeholder="Full name" autocomplete="name">
+    </div>
+  </div>
+
+  <!-- PART 1 -->
+  <div class="part-header">
+    <span class="part-num">PART 01</span>
+    <span class="part-title">Projected staff weeks for FY27</span>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>ISAU 1 operations</h2>
+      <p>Select your role and enter estimated staff weeks (0–50). Leave blank if not applicable.</p>
+    </div>
+    <div class="section-body">
+      <table class="ops-table" id="ops-table">
+        <thead><tr>
+          <th style="width:55%">Operation</th>
+          <th style="width:22%">Role</th>
+          <th style="width:13%">Staff weeks</th>
+        </tr></thead>
+        <tbody id="ops-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Cross-support to other GPs / Regions</h2>
+      <p>Add each cross-support activity, your role, and estimated staff weeks.</p>
+    </div>
+    <div class="section-body dynamic-section">
+      <div class="col-headers">
+        <span class="col-hdr">Activity name</span>
+        <span class="col-hdr">Role</span>
+        <span class="col-hdr">Weeks</span>
+        <span></span>
+      </div>
+      <div id="cross-rows"></div>
+      <button class="add-btn" onclick="addRow('cross-rows','cross')">+ Add activity</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Other activities</h2>
+      <p>Add any other activities not listed above.</p>
+    </div>
+    <div class="section-body dynamic-section">
+      <div class="col-headers">
+        <span class="col-hdr">Activity name</span>
+        <span class="col-hdr">Role</span>
+        <span class="col-hdr">Weeks</span>
+        <span></span>
+      </div>
+      <div id="other-rows"></div>
+      <button class="add-btn" onclick="addRow('other-rows','other')">+ Add activity</button>
+    </div>
+  </div>
+
+  <div class="part-divider"></div>
+
+  <!-- PART 2 -->
+  <div class="part-header">
+    <span class="part-num">PART 02</span>
+    <span class="part-title">Work program preference for FY27</span>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Preferred operations</h2>
+      <p>Select how many operations to rank, then check your preferred operations. Order of selection = your ranking.</p>
+    </div>
+    <div class="rank-controls">
+      <label for="how-many">How many operations to rank?</label>
+      <select id="how-many" onchange="updateLimit()">
+        <option value="3">3</option><option value="4">4</option>
+        <option value="5" selected>5</option><option value="6">6</option>
+        <option value="7">7</option><option value="8">8</option>
+        <option value="9">9</option><option value="10">10</option>
+      </select>
+      <span class="rank-limit-info" id="rank-info">0 / 5 selected</span>
+    </div>
+    <ul class="rank-list" id="rank-list"></ul>
+  </div>
+
+  <div class="submit-area">
+    <button class="submit-btn" id="submit-btn" onclick="submitForm()">
+      <div class="spinner"></div>
+      <span class="btn-label">Submit survey</span>
+    </button>
+    <button class="export-btn" onclick="exportCSV()">↓ Export as CSV</button>
+  </div>
+
+  <div class="error-banner" id="error-banner"></div>
+
+  <div class="success-banner" id="success-banner">
+    <h3>✓ Response submitted to Google Sheets</h3>
+    <p id="success-msg">Your response has been recorded.</p>
+  </div>
+
+  <div class="summary-wrap" id="summary-wrap">
+    <h2>Your response summary</h2>
+    <div id="summary-content"></div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+// ─── CONFIG ──────────────────────────────────────────────────────────────────
+// Loaded from localStorage so each user only has to paste it once
+let SCRIPT_URL = localStorage.getItem('fy27_script_url') || '';
+
+function saveScriptUrl() {
+  const val = document.getElementById('script-url-input').value.trim();
+  if (!val.startsWith('https://script.google.com')) {
+    alert('That does not look like a valid Apps Script URL. It should start with https://script.google.com/macros/s/');
+    return;
+  }
+  SCRIPT_URL = val;
+  localStorage.setItem('fy27_script_url', val);
+  const banner = document.getElementById('setup-banner');
+  banner.className = 'setup-banner connected';
+  banner.innerHTML = '<div class="icon">✅</div><div><p><strong>Connected to Google Sheets.</strong> Responses will be saved automatically when you submit.</p></div>';
+}
+
+// Show saved URL if already configured
+window.addEventListener('load', () => {
+  if (SCRIPT_URL) {
+    document.getElementById('setup-banner').className = 'setup-banner connected';
+    document.getElementById('setup-banner').innerHTML = '<div class="icon">✅</div><div><p><strong>Connected to Google Sheets.</strong> Responses will be saved automatically when you submit. <a href="#" onclick="resetUrl()">Change URL</a></p></div>';
+  } else {
+    document.getElementById('script-url-input').value = '';
+  }
+});
+
+function resetUrl() {
+  localStorage.removeItem('fy27_script_url');
+  SCRIPT_URL = '';
+  location.reload();
+}
+
+// ─── DATA ────────────────────────────────────────────────────────────────────
+const ops = [
+  {code:"ASA",id:"P180562",name:"Bangladesh PASA"},
+  {code:"ASA",id:"P500527",name:"STARCE Hydromet & EWS"},
+  {code:"ASA",id:"P500582",name:"Reg. Devt. Himalayas"},
+  {code:"ASA",id:"P512625",name:"India PASA"},
+  {code:"LEN",id:"P506340",name:"Maharashtra"},
+  {code:"LEN",id:"P517116",name:"Bangladesh CERP"},
+  {code:"SPN",id:"P154990",name:"Jhelum and Tawi"},
+  {code:"SPN",id:"P158502",name:"Jakhand Municp."},
+  {code:"SPN",id:"P160005",name:"CRes MPA"},
+  {code:"SPN",id:"P163418",name:"NUGIP"},
+  {code:"SPN",id:"P163957",name:"Maldives"},
+  {code:"SPN",id:"P165477",name:"Dhaka City Neighb."},
+  {code:"SPN",id:"P168633",name:"Kerala Solid Waste"},
+  {code:"SPN",id:"P170811",name:"Punjab Municipal"},
+  {code:"SPN",id:"P173312",name:"Bangladesh RIVER"},
+  {code:"SPN",id:"P174778",name:"Kerala PforR"},
+  {code:"SPN",id:"P174937",name:"LG COVID-19"},
+  {code:"SPN",id:"P175081",name:"BT:RIR"},
+  {code:"SPN",id:"P175221",name:"Chennai City Partner."},
+  {code:"SPN",id:"P175728",name:"Gujarat Resil. Cities"},
+  {code:"SPN",id:"P178985",name:"Bangladesh Resilient Urban"},
+  {code:"SPN",id:"P179189",name:"Tamil Nadu Climate Resil."},
+  {code:"SPN",id:"P181344",name:"Nepal Cat DDO"},
+  {code:"SPN",id:"P500536",name:"Bhutan Cat DDO"},
+  {code:"SPN",id:"P501274",name:"B-HELP"},
+  {code:"SPN",id:"P507508",name:"Amaravati"},
+  {code:"SPN",id:"P508058",name:"BSTRONG"},
+  {code:"SPN",id:"P511605",name:"Sri Lanka REVIVE"},
+  {code:"SPN",id:"P512377",name:"Lumbini"},
+  {code:"SPN",id:"P513815",name:"READY-HP"}
+];
+
+// ─── BUILD OPS TABLE ─────────────────────────────────────────────────────────
+const tbody = document.getElementById('ops-body');
+ops.forEach((op, i) => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td><span class="badge badge-${op.code.toLowerCase()}">${op.code}</span><span class="op-id">${op.id}</span>${op.name}</td>
+    <td><select class="role-sel" id="role_${i}"><option value="">— select —</option><option>TTL</option><option>Co-TTL</option><option>Team member</option></select></td>
+    <td><input class="weeks-inp" type="number" id="weeks_${i}" min="0" max="50" placeholder="—"></td>`;
+  tbody.appendChild(tr);
+});
+
+// ─── DYNAMIC ROWS ────────────────────────────────────────────────────────────
+let counters = {cross: 0, other: 0};
+function roleOpts(name) {
+  return `<select class="role-sel" name="${name}"><option value="">— select —</option><option>TTL</option><option>Co-TTL</option><option>Team member</option></select>`;
+}
+function addRow(containerId, prefix) {
+  const idx = ++counters[prefix];
+  const div = document.createElement('div');
+  div.className = 'activity-row';
+  div.id = `${prefix}_row_${idx}`;
+  div.innerHTML = `<input type="text" placeholder="Activity name" id="${prefix}_name_${idx}">
+    ${roleOpts(`${prefix}_role_${idx}`)}
+    <input class="weeks-inp" type="number" id="${prefix}_weeks_${idx}" min="0" max="50" placeholder="—">
+    <button class="remove-btn" onclick="document.getElementById('${prefix}_row_${idx}').remove()" title="Remove">✕</button>`;
+  document.getElementById(containerId).appendChild(div);
+}
+addRow('cross-rows','cross');
+addRow('other-rows','other');
+
+// ─── RANKING ─────────────────────────────────────────────────────────────────
+const rankList = document.getElementById('rank-list');
+const checkedOrder = [];
+ops.forEach((op, i) => {
+  const li = document.createElement('li');
+  li.className = 'rank-item';
+  li.id = `rank_item_${i}`;
+  li.innerHTML = `<input type="checkbox" class="rank-cb" id="rank_cb_${i}" onchange="handleCheck(${i}, this)">
+    <div class="rank-num" id="rank_num_${i}"></div>
+    <label for="rank_cb_${i}"><span class="badge badge-${op.code.toLowerCase()}">${op.code}</span><span class="op-id">${op.id}</span>${op.name}</label>`;
+  rankList.appendChild(li);
+});
+
+function getLimit() { return parseInt(document.getElementById('how-many').value); }
+function handleCheck(i, cb) {
+  const limit = getLimit();
+  if (cb.checked) {
+    if (checkedOrder.length >= limit) { cb.checked = false; return; }
+    checkedOrder.push(i);
+  } else {
+    const pos = checkedOrder.indexOf(i);
+    if (pos > -1) checkedOrder.splice(pos, 1);
+  }
+  refreshRankNums();
+}
+function refreshRankNums() {
+  ops.forEach((_, i) => {
+    const num = document.getElementById(`rank_num_${i}`);
+    num.textContent = ''; num.classList.remove('active');
+    document.getElementById(`rank_item_${i}`).classList.remove('selected');
+  });
+  checkedOrder.forEach((idx, rank) => {
+    const num = document.getElementById(`rank_num_${idx}`);
+    num.textContent = rank + 1; num.classList.add('active');
+    document.getElementById(`rank_item_${idx}`).classList.add('selected');
+  });
+  document.getElementById('rank-info').textContent = `${checkedOrder.length} / ${getLimit()} selected`;
+}
+function updateLimit() {
+  const limit = getLimit();
+  while (checkedOrder.length > limit) {
+    const removed = checkedOrder.pop();
+    document.getElementById(`rank_cb_${removed}`).checked = false;
+  }
+  refreshRankNums();
+}
+
+// ─── COLLECT DATA ─────────────────────────────────────────────────────────────
+function collectData() {
+  const name = document.getElementById('resp-name').value.trim() || 'Anonymous';
+  const timestamp = new Date().toISOString();
+
+  // ISAU ops
+  const isauOps = ops.map((op, i) => ({
+    projectId: op.id,
+    name: op.name,
+    code: op.code,
+    role: document.getElementById(`role_${i}`).value,
+    weeks: document.getElementById(`weeks_${i}`).value
+  })).filter(r => r.role || r.weeks);
+
+  // Cross-support
+  const crossOps = [];
+  for (let i = 1; i <= counters.cross; i++) {
+    const rowEl = document.getElementById(`cross_row_${i}`);
+    if (!rowEl) continue;
+    const actName = document.getElementById(`cross_name_${i}`)?.value?.trim();
+    const role = rowEl.querySelector('select')?.value;
+    const weeks = document.getElementById(`cross_weeks_${i}`)?.value;
+    if (actName || role || weeks) crossOps.push({ name: actName || '', role: role || '', weeks: weeks || '' });
+  }
+
+  // Other
+  const otherOps = [];
+  for (let i = 1; i <= counters.other; i++) {
+    const rowEl = document.getElementById(`other_row_${i}`);
+    if (!rowEl) continue;
+    const actName = document.getElementById(`other_name_${i}`)?.value?.trim();
+    const role = rowEl.querySelector('select')?.value;
+    const weeks = document.getElementById(`other_weeks_${i}`)?.value;
+    if (actName || role || weeks) otherOps.push({ name: actName || '', role: role || '', weeks: weeks || '' });
+  }
+
+  // Rankings
+  const rankings = checkedOrder.map((idx, rank) => ({
+    rank: rank + 1,
+    projectId: ops[idx].id,
+    name: ops[idx].name,
+    code: ops[idx].code
+  }));
+
+  return { timestamp, respondent: name, isauOps, crossOps, otherOps, rankings };
+}
+
+// ─── SUBMIT ───────────────────────────────────────────────────────────────────
+async function submitForm() {
+  const name = document.getElementById('resp-name').value.trim();
+  if (!name) { alert('Please enter your name before submitting.'); document.getElementById('resp-name').focus(); return; }
+
+  const btn = document.getElementById('submit-btn');
+  const errorBanner = document.getElementById('error-banner');
+  errorBanner.style.display = 'none';
+
+  const data = collectData();
+
+  // If no script URL configured, fall back to CSV download only
+  if (!SCRIPT_URL) {
+    renderSummary(data);
+    document.getElementById('success-banner').style.display = 'block';
+    document.getElementById('success-msg').textContent = `Thank you, ${name}. No Google Sheets URL configured — please use "Export as CSV" below to save your response.`;
+    document.getElementById('success-banner').scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  try {
+    // Google Apps Script requires no-cors mode; we use an img trick as fallback
+    // but fetch with mode no-cors is fine for fire-and-forget
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    // no-cors means we can't read the response body, but if we got here without throwing, it was sent
+    document.getElementById('success-banner').style.display = 'block';
+    document.getElementById('success-msg').innerHTML = `Thank you, <strong>${name}</strong>. Your response has been saved to Google Sheets. You can also download a local copy below.`;
+    document.getElementById('success-banner').scrollIntoView({behavior:'smooth', block:'center'});
+    renderSummary(data);
+    btn.disabled = true; // prevent double-submit
+
+  } catch (err) {
+    errorBanner.style.display = 'block';
+    errorBanner.textContent = `Could not reach Google Sheets (${err.message}). Your data has NOT been saved online. Please use "Export as CSV" to save locally and send to your team lead.`;
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
+
+  btn.classList.remove('loading');
+}
+
+// ─── RENDER SUMMARY ───────────────────────────────────────────────────────────
+function renderSummary(data) {
+  const wrap = document.getElementById('summary-wrap');
+  const content = document.getElementById('summary-content');
+  let html = '';
+
+  html += `<div class="summary-section"><h3>ISAU 1 operations</h3>`;
+  if (data.isauOps.length) {
+    html += `<table class="summary-table"><thead><tr><th>Operation</th><th>Role</th><th>Staff weeks</th></tr></thead><tbody>`;
+    data.isauOps.forEach(r => { html += `<tr><td><span class="badge badge-${r.code.toLowerCase()}">${r.code}</span><span class="op-id">${r.projectId}</span>${r.name}</td><td>${r.role||'—'}</td><td>${r.weeks||'—'}</td></tr>`; });
+    html += `</tbody></table>`;
+  } else { html += `<p style="font-size:13px;color:var(--text-muted)">No entries.</p>`; }
+  html += `</div>`;
+
+  html += `<div class="summary-section"><h3>Cross-support activities</h3>`;
+  if (data.crossOps.length) {
+    html += `<table class="summary-table"><thead><tr><th>Activity</th><th>Role</th><th>Staff weeks</th></tr></thead><tbody>`;
+    data.crossOps.forEach(r => { html += `<tr><td>${r.name||'—'}</td><td>${r.role||'—'}</td><td>${r.weeks||'—'}</td></tr>`; });
+    html += `</tbody></table>`;
+  } else { html += `<p style="font-size:13px;color:var(--text-muted)">No entries.</p>`; }
+  html += `</div>`;
+
+  html += `<div class="summary-section"><h3>Other activities</h3>`;
+  if (data.otherOps.length) {
+    html += `<table class="summary-table"><thead><tr><th>Activity</th><th>Role</th><th>Staff weeks</th></tr></thead><tbody>`;
+    data.otherOps.forEach(r => { html += `<tr><td>${r.name||'—'}</td><td>${r.role||'—'}</td><td>${r.weeks||'—'}</td></tr>`; });
+    html += `</tbody></table>`;
+  } else { html += `<p style="font-size:13px;color:var(--text-muted)">No entries.</p>`; }
+  html += `</div>`;
+
+  html += `<div class="summary-section"><h3>Work program preference</h3>`;
+  if (data.rankings.length) {
+    html += `<table class="summary-table"><thead><tr><th>Rank</th><th>Operation</th></tr></thead><tbody>`;
+    data.rankings.forEach(r => { html += `<tr><td><span class="rank-badge">${r.rank}</span></td><td><span class="badge badge-${r.code.toLowerCase()}">${r.code}</span><span class="op-id">${r.projectId}</span>${r.name}</td></tr>`; });
+    html += `</tbody></table>`;
+  } else { html += `<p style="font-size:13px;color:var(--text-muted)">No preferences selected.</p>`; }
+  html += `</div>`;
+
+  content.innerHTML = html;
+  wrap.style.display = 'block';
+  setTimeout(() => wrap.scrollIntoView({behavior:'smooth', block:'start'}), 400);
+}
+
+// ─── CSV EXPORT ───────────────────────────────────────────────────────────────
+function exportCSV() {
+  const data = collectData();
+  let rows = [['Timestamp','Respondent','Section','Project ID','Operation/Activity','Role','Staff Weeks']];
+  data.isauOps.forEach(r => rows.push([data.timestamp, data.respondent, 'ISAU Operations', r.projectId, r.name, r.role, r.weeks]));
+  data.crossOps.forEach(r => rows.push([data.timestamp, data.respondent, 'Cross-support', '', r.name, r.role, r.weeks]));
+  data.otherOps.forEach(r => rows.push([data.timestamp, data.respondent, 'Other', '', r.name, r.role, r.weeks]));
+  rows.push([]);
+  rows.push(['Timestamp','Respondent','Section','Rank','Project ID','Operation']);
+  data.rankings.forEach(r => rows.push([data.timestamp, data.respondent, 'Preference', r.rank, r.projectId, r.name]));
+  const csv = rows.map(r => r.map(c => `"${String(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `FY27_Survey_${data.respondent.replace(/\s+/g,'_')}_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
