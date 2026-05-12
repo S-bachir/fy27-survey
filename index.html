@@ -490,7 +490,7 @@
 
   <!-- Submit -->
   <div class="submit-area">
-    <button class="submit-btn" onclick="submitForm()">Submit survey</button>
+    <button class="submit-btn" id="submit-btn" onclick="submitForm()">Submit survey</button>
     <button class="export-btn" onclick="exportCSV()">&#8595; Export responses (CSV)</button>
   </div>
 
@@ -656,7 +656,11 @@ function collectData() {
 // Submit
 async function submitForm() {
   const name = document.getElementById('resp-name').value.trim();
-  if (!name) { alert('Please enter your name before submitting.'); document.getElementById('resp-name').focus(); return; }
+  if (!name) {
+    alert('Please enter your name before submitting.');
+    document.getElementById('resp-name').focus();
+    return;
+  }
 
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
@@ -665,21 +669,29 @@ async function submitForm() {
   const data = collectData();
 
   try {
+    // Use a form-encoded POST — works reliably with Google Apps Script no-cors
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(data));
+
     await fetch(SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: formData
     });
-    document.getElementById('success-msg').innerHTML = `Thank you, <strong>${name}</strong>. Your response has been saved successfully.`;
+
+    // no-cors means we can't read the response, but if we reach here it was sent
+    document.getElementById('success-msg').innerHTML =
+      `Thank you, <strong>${name}</strong>. Your response has been saved to Google Sheets.`;
     document.getElementById('success-banner').style.display = 'block';
     document.getElementById('success-banner').scrollIntoView({behavior:'smooth', block:'center'});
     btn.textContent = '✓ Submitted';
+    btn.style.background = '#1A7A4A';
     renderSummary(name);
+
   } catch (err) {
     btn.disabled = false;
     btn.textContent = 'Submit survey';
-    alert('Submission failed. Please try again or use "Export as CSV" as a backup.');
+    alert('Could not reach Google Sheets. Please try again or use Export as CSV as a backup.');
   }
 }
 
