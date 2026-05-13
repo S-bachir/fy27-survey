@@ -200,6 +200,10 @@
     <button class="submit-btn" id="submit-btn" onclick="submitForm()">Submit survey</button>
     <button class="export-btn" onclick="exportCSV()">↓ Export as CSV</button>
   </div>
+  <div id="weeks-error" style="display:none;margin-top:1rem;background:#FCEBEB;border:1px solid #F5ABAB;border-radius:8px;padding:1rem 1.25rem;">
+    <strong style="color:#A32D2D;font-size:14px;">⚠ Please review your staff weeks</strong>
+    <p id="weeks-error-msg" style="color:#A32D2D;font-size:13px;margin-top:4px;"></p>
+  </div>
 
   <div class="summary-wrap" id="summary-wrap">
     <h2>Your response summary</h2>
@@ -208,7 +212,7 @@
 </div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydcchOOKfOU-noYKy2kdX9rgPt9755Z2dyvn3qxGumCHIxhbwcB7s-V8nA-dtQNJIakA/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGlOIFCJQpG8XV-x3h-oQiXEHkZF51PDYC29vyfaBIGCSGUA9qzzc9owgdNjMSzOxSYA/exec';
 const CACHE_KEY  = 'fy27_draft';
 
 const ops = [
@@ -338,16 +342,39 @@ function collectData() {
   const crossOps=[]; for(let i=1;i<=counters.cross;i++){const el=document.getElementById(`cross_row_${i}`);if(!el)continue;const n=document.getElementById(`cross_name_${i}`)?.value?.trim();const r=document.getElementById(`cross_role_${i}`)?.value;const w=document.getElementById(`cross_weeks_${i}`)?.value;if(n||r||w)crossOps.push({name:n||'',role:r||'',weeks:w||''});}
   const otherOps=[]; for(let i=1;i<=counters.other;i++){const el=document.getElementById(`other_row_${i}`);if(!el)continue;const n=document.getElementById(`other_name_${i}`)?.value?.trim();const r=document.getElementById(`other_role_${i}`)?.value;const w=document.getElementById(`other_weeks_${i}`)?.value;if(n||r||w)otherOps.push({name:n||'',role:r||'',weeks:w||''});}
   const rankings=checkedOrder.map((idx,rank)=>({rank:rank+1,projectId:ops[idx].id,name:ops[idx].name,code:ops[idx].code}));
-  return {timestamp:new Date().toISOString(),respondent:name,isauOps,crossOps,otherOps,rankings};
+  const totalWeeks=[...isauOps,...crossOps,...otherOps].reduce((s,r)=>s+(parseFloat(r.weeks)||0),0);return {timestamp:new Date().toISOString(),respondent:name,totalWeeks,isauOps,crossOps,otherOps,rankings};
 }
 
 // Submit — image src trick, fully CORS-free from any domain
 function submitForm() {
   const name=document.getElementById('resp-name').value.trim();
   if(!name){alert('Please enter your name before submitting.');document.getElementById('resp-name').focus();return;}
+
+  // ── Week validation ──────────────────────────────────────────
+  const errBox=document.getElementById('weeks-error');
+  const errMsg=document.getElementById('weeks-error-msg');
+  errBox.style.display='none';
+
+  let totalWeeks=0;
+  const allWeekInputs=[
+    ...ops.map((_,i)=>document.getElementById(`weeks_${i}`)),
+    ...[...Array(counters.cross+1).keys()].slice(1).map(i=>document.getElementById(`cross_weeks_${i}`)),
+    ...[...Array(counters.other+1).keys()].slice(1).map(i=>document.getElementById(`other_weeks_${i}`))
+  ].filter(Boolean);
+  allWeekInputs.forEach(el=>{ const v=parseFloat(el.value); if(!isNaN(v)) totalWeeks+=v; });
+
+  if(totalWeeks > 52){
+    errMsg.textContent=`Your total declared staff weeks is ${totalWeeks} weeks, which exceeds the 52-week annual limit. Please review your entries and reduce the total before submitting.`;
+    errBox.style.display='block';
+    errBox.scrollIntoView({behavior:'smooth',block:'center'});
+    return; // block submission
+  }
+  // ────────────────────────────────────────────────────────────
+
   document.getElementById('submit-btn').disabled=true;
   document.getElementById('overlay').classList.add('active');
   const data=collectData();
+  data.totalWeeks=totalWeeks; // pass total to sheet
   const url=SCRIPT_URL+'?data='+encodeURIComponent(JSON.stringify(data));
   const img=new Image();
   function onDone(){
